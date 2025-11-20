@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
@@ -24,14 +23,20 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!title || !description) {
       toast.error("Title and description are required");
       return;
     }
+
     const bug = { title, description, status, priority };
     onSubmit(bug);
+
     if (!editingBug) {
-      setTitle(''); setDescription(''); setStatus('Open'); setPriority('Medium');
+      setTitle('');
+      setDescription('');
+      setStatus('Open');
+      setPriority('Medium');
     }
   };
 
@@ -41,40 +46,56 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-2">
           <label>Title</label>
-          <input type="text" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input 
+            type="text" 
+            className="form-control" 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+          />
         </div>
         <div className="mb-2">
           <label>Description</label>
-          <textarea className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea 
+            className="form-control" 
+            value={description} 
+            onChange={(e) => setDescription(e.target.value)} 
+          />
         </div>
         <div className="mb-2">
           <label>Status</label>
-          <select className="form-control" value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option>Open</option><option>In Progress</option><option>Closed</option>
+          <select 
+            className="form-control" 
+            value={status} 
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option>Open</option>
+            <option>In Progress</option>
+            <option>Closed</option>
           </select>
         </div>
         <div className="mb-3">
           <label>Priority</label>
-          <select className="form-control" value={priority} onChange={(e) => setPriority(e.target.value)}>
-            <option>Low</option><option>Medium</option><option>High</option>
+          <select 
+            className="form-control" 
+            value={priority} 
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
           </select>
         </div>
-        <button type="submit" className="btn btn-primary me-2">{editingBug ? 'Update Bug' : 'Add Bug'}</button>
-        {editingBug && <button type="button" className="btn btn-secondary" onClick={cancelEdit}>Cancel</button>}
+        <button type="submit" className="btn btn-primary me-2">
+          {editingBug ? 'Update Bug' : 'Add Bug'}
+        </button>
+        {editingBug && (
+          <button type="button" className="btn btn-secondary" onClick={cancelEdit}>
+            Cancel
+          </button>
+        )}
       </form>
     </div>
   );
-};
-
-BugForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  cancelEdit: PropTypes.func,
-  editingBug: PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    status: PropTypes.string,
-    priority: PropTypes.string,
-  }),
 };
 
 export default BugForm;

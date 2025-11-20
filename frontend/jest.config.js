@@ -1,7 +1,11 @@
 module.exports = {
-  testEnvironment: 'jsdom',
-  testMatch: ['**/tests/unit/**/*.test.jsx', '**/tests/integration/**/*.test.jsx'],
   moduleNameMapper: {
-    '\\.(css|scss)$': 'identity-obj-proxy',
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy"
   },
+  transform: {
+    "^.+\\.(js|jsx)$": "babel-jest"
+  },
+  transformIgnorePatterns: [
+    "/node_modules/(?!(axios)/)"   // <-- Transform axios ESM
+  ]
 };
