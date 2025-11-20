@@ -13,7 +13,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "https://bugtracker-frontend-non2j8imn-morgan-wambulwas-projects.vercel.app"
+    "https://bugtracker-frontend-lgvnhdvl7-morgan-wambulwas-projects.vercel.app"
  ],
   credentials: true,
 };
