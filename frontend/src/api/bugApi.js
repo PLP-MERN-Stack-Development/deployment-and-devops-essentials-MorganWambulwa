@@ -1,46 +1,43 @@
-// src/api/bugApi.js
-const axios = require('axios'); // Use CommonJS style for Jest compatibility
+import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/bugs';
+const VITE_API_URL = 'https://bug-tracker-l1td.onrender.com/api/bugs';
 
-const fetchBugs = async () => {
+export const fetchBugs = async () => {
   try {
-    const response = await axios.get(API_URL);
-    return response.data;
+    const res = await axios.get(VITE_API_URL);
+    return res.data.data || res.data;
   } catch (error) {
     console.error('Error fetching bugs:', error);
     throw error;
   }
 };
 
-const addBug = async (bug) => {
+export const createBug = async (bug) => {
   try {
-    const response = await axios.post(API_URL, bug);
-    return response.data;
+    const res = await axios.post(VITE_API_URL, bug);
+    return res.data;
   } catch (error) {
-    console.error('Error adding bug:', error);
+    console.error('Error creating bug:', error);
     throw error;
   }
 };
 
-const updateBug = async (id, updates) => {
+export const updateBug = async (id, updatedBug) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, updates);
-    return response.data;
+    const res = await axios.put(`${VITE_API_URL}/${id}`, updatedBug);
+    return res.data;
   } catch (error) {
     console.error('Error updating bug:', error);
     throw error;
   }
 };
 
-const deleteBug = async (id) => {
+export const deleteBug = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    return response.data;
+    const res = await axios.delete(`${VITE_API_URL}/${id}`);
+    return res.data;
   } catch (error) {
     console.error('Error deleting bug:', error);
     throw error;
   }
 };
-
-module.exports = { fetchBugs, addBug, updateBug, deleteBug };

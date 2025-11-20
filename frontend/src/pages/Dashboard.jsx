@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BugForm from '../components/BugForm';
 import BugList from '../components/BugList';
-import { fetchBugs, addBug, updateBug, deleteBug } from '../api/bugApi';
+import { fetchBugs, createBug, updateBug, deleteBug } from '../api/bugApi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
