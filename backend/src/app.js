@@ -9,7 +9,16 @@ const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "https://bugtracker-frontend-non2j8imn-morgan-wambulwas-projects.vercel.app"
+ ],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
