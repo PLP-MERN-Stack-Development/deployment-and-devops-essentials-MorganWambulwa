@@ -4,14 +4,10 @@ const bugRoutes = require('./routes/bugRoutes');
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://bugtracker-frontend-pq7x7ksh5-morgan-wambulwas-projects.vercel.app'
-];
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+  origin: CLIENT_URL,
 }));
 
 app.use(express.json());
