@@ -7,7 +7,7 @@ const app = express();
 
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
-  'https://deployment-bugtracker-frontend-pc9p03p0h.vercel.app/'
+  'https://deployment-bugtracker-frontend.vercel.app/'
 ];
 
 app.use(
