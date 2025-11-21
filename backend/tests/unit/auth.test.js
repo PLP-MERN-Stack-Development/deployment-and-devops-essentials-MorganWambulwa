@@ -1,4 +1,4 @@
-const { hashPassword, verifyPassword } = require('../../src/utils/auth');
+import { hashPassword, verifyPassword } from '../../src/utils/auth.js';
 
 describe('Auth Utilities', () => {
   it('should hash and verify password correctly', async () => {

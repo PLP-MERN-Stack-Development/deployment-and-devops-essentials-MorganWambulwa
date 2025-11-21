@@ -1,32 +1,35 @@
-// server/src/utils/auth.js
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'testsecret';
-const JWT_EXPIRES_IN = '1h';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
-function generateToken(user) {
+export const generateToken = (user) => {
   const payload = { id: user._id ? user._id.toString() : user.id };
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-}
+};
 
-function verifyToken(token) {
+export const verifyToken = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (err) {
+  } catch {
     return null;
   }
-}
+};
 
-function authMiddleware(req, res, next) {
-  const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Not authenticated' });
+export const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'Not authenticated' });
   }
-  const token = auth.split(' ')[1];
+
+  const token = authHeader.split(' ')[1];
   const decoded = verifyToken(token);
-  if (!decoded) return res.status(401).json({ message: 'Invalid token' });
+
+  if (!decoded) {
+    return res.status(401).json({ success: false, message: 'Invalid token' });
+  }
+
   req.user = { id: decoded.id };
   next();
-}
-
-module.exports = { generateToken, verifyToken, authMiddleware };
+};

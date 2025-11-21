@@ -10,12 +10,11 @@ const Dashboard = () => {
   const [editingBug, setEditingBug] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load all bugs from backend
   const loadBugs = async () => {
     try {
       setLoading(true);
       const data = await fetchBugs();
-      setBugs(data);
+      setBugs(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err.response ? err.response.data : err);
       toast.error('Unable to load bugs from server');
@@ -28,7 +27,6 @@ const Dashboard = () => {
     loadBugs();
   }, []);
 
-  // Add or update bug
   const handleAddBug = async (bug) => {
     try {
       if (editingBug) {
@@ -51,7 +49,7 @@ const Dashboard = () => {
   const handleDeleteBug = async (id) => {
     try {
       await deleteBug(id);
-      setBugs(bugs.filter(b => b._id !== id));
+      setBugs(prev => prev.filter(b => b._id !== id));
       toast.success('Bug deleted successfully');
     } catch (err) {
       console.error(err.response ? err.response.data : err);

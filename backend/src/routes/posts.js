@@ -1,13 +1,22 @@
-// server/src/routes/posts.js
-const express = require('express');
+import express from 'express';
+import {
+  createPost,
+  getPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+} from '../controllers/postsController.js';
+
 const router = express.Router();
-const controller = require('../controllers/postsController');
 
-router.get('/', controller.getPosts);
-router.get('/:id', controller.getPostById);
+const asyncHandler = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
 
-router.post('/', controller.createPost);
-router.put('/:id', controller.updatePost);
-router.delete('/:id', controller.deletePost);
+router.get('/', asyncHandler(getPosts));
+router.get('/:id', asyncHandler(getPostById));
+router.post('/', asyncHandler(createPost));
+router.put('/:id', asyncHandler(updatePost));
+router.delete('/:id', asyncHandler(deletePost));
 
-module.exports = router;
+export default router;

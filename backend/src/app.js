@@ -1,25 +1,34 @@
 import express from 'express';
 import cors from 'cors';
 import bugRoutes from './routes/bugRoutes.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://bugtracker-frontend-pq7x7ksh5-morgan-wambulwas-projects.vercel.app'
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'https://deployment-bugtracker-frontend-pc9p03p0h.vercel.app/'
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
 app.use('/api/bugs', bugRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+app.get('/health', (req, res) => {
+  res.status(200).json({ success: true, status: 'ok' });
 });
+
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'Route not found' });
+});
+
+app.use(errorHandler);
 
 export default app;

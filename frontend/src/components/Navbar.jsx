@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Navbar = () => (
-  <nav style={{
+  <header role="banner" style={{
     backgroundColor: '#d7ccc8', 
     padding: '15px 30px', 
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
@@ -14,7 +14,7 @@ const Navbar = () => (
     }}>
       Bug Tracker
     </h1>
-  </nav>
+  </header>
 );
 
 export default Navbar;

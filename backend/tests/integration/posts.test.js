@@ -1,12 +1,11 @@
-// posts.test.js - Integration tests for posts API endpoints
-
-const request = require('supertest');
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const app = require('../../src/app');
-const Post = require('../../src/models/Post');
-const User = require('../../src/models/User');
-const { generateToken } = require('../../src/utils/auth');
+// server/src/tests/integration/posts.test.js
+import request from 'supertest';
+import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import app from '../../src/app.js';
+import Post from '../../src/models/Post.js';
+import User from '../../src/models/User.js';
+import { generateToken } from '../../src/utils/auth.js';
 
 let mongoServer;
 let token;
@@ -45,7 +44,7 @@ afterEach(async () => {
   const collections = mongoose.connection.collections;
   for (const key in collections) {
     const collection = collections[key];
-    if (collection.collectionName !== 'users' && collection.collectionName !== 'posts') {
+    if (!['users', 'posts'].includes(collection.collectionName)) {
       await collection.deleteMany({});
     }
   }
@@ -78,9 +77,7 @@ describe('POST /api/posts', () => {
       category: mongoose.Types.ObjectId().toString(),
     };
 
-    const res = await request(app)
-      .post('/api/posts')
-      .send(newPost);
+    const res = await request(app).post('/api/posts').send(newPost);
 
     expect(res.status).toBe(401);
   });
@@ -112,7 +109,7 @@ describe('GET /api/posts', () => {
 
   it('should filter posts by category', async () => {
     const categoryId = mongoose.Types.ObjectId().toString();
-    
+
     await Post.create({
       title: 'Filtered Post',
       content: 'This post should be filtered by category',
@@ -121,8 +118,7 @@ describe('GET /api/posts', () => {
       slug: 'filtered-post',
     });
 
-    const res = await request(app)
-      .get(`/api/posts?category=${categoryId}`);
+    const res = await request(app).get(`/api/posts?category=${categoryId}`);
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBeTruthy();
@@ -143,11 +139,8 @@ describe('GET /api/posts', () => {
     }
     await Post.insertMany(posts);
 
-    const page1 = await request(app)
-      .get('/api/posts?page=1&limit=10');
-    
-    const page2 = await request(app)
-      .get('/api/posts?page=2&limit=10');
+    const page1 = await request(app).get('/api/posts?page=1&limit=10');
+    const page2 = await request(app).get('/api/posts?page=2&limit=10');
 
     expect(page1.status).toBe(200);
     expect(page2.status).toBe(200);
@@ -159,8 +152,7 @@ describe('GET /api/posts', () => {
 
 describe('GET /api/posts/:id', () => {
   it('should return a post by ID', async () => {
-    const res = await request(app)
-      .get(`/api/posts/${postId}`);
+    const res = await request(app).get(`/api/posts/${postId}`);
 
     expect(res.status).toBe(200);
     expect(res.body._id).toBe(postId.toString());
@@ -169,8 +161,7 @@ describe('GET /api/posts/:id', () => {
 
   it('should return 404 for non-existent post', async () => {
     const nonExistentId = mongoose.Types.ObjectId();
-    const res = await request(app)
-      .get(`/api/posts/${nonExistentId}`);
+    const res = await request(app).get(`/api/posts/${nonExistentId}`);
 
     expect(res.status).toBe(404);
   });
@@ -194,13 +185,9 @@ describe('PUT /api/posts/:id', () => {
   });
 
   it('should return 401 if not authenticated', async () => {
-    const updates = {
-      title: 'Unauthorized Update',
-    };
+    const updates = { title: 'Unauthorized Update' };
 
-    const res = await request(app)
-      .put(`/api/posts/${postId}`)
-      .send(updates);
+    const res = await request(app).put(`/api/posts/${postId}`).send(updates);
 
     expect(res.status).toBe(401);
   });
@@ -213,9 +200,7 @@ describe('PUT /api/posts/:id', () => {
     });
     const anotherToken = generateToken(anotherUser);
 
-    const updates = {
-      title: 'Forbidden Update',
-    };
+    const updates = { title: 'Forbidden Update' };
 
     const res = await request(app)
       .put(`/api/posts/${postId}`)
@@ -233,15 +218,14 @@ describe('DELETE /api/posts/:id', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.status).toBe(200);
-    
+
     const deletedPost = await Post.findById(postId);
     expect(deletedPost).toBeNull();
   });
 
   it('should return 401 if not authenticated', async () => {
-    const res = await request(app)
-      .delete(`/api/posts/${postId}`);
+    const res = await request(app).delete(`/api/posts/${postId}`);
 
     expect(res.status).toBe(401);
   });
-}); 
+});

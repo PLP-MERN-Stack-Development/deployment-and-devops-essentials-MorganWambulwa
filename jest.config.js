@@ -1,46 +1,53 @@
-// jest.config.js - Root Jest configuration file
-
 module.exports = {
   projects: [
+    //Backend Tests
     {
-      displayName: 'server',
+      displayName: 'backend',
       testEnvironment: 'node',
-      testMatch: ['<rootDir>/server/tests/**/*.test.js'],
+      testMatch: ['<rootDir>/backend/tests/**/*.test.js'],
       moduleFileExtensions: ['js', 'json', 'node'],
-      setupFilesAfterEnv: ['<rootDir>/server/tests/setup.js'],
-      coverageDirectory: '<rootDir>/coverage/server',
+      setupFilesAfterEnv: ['<rootDir>/backend/tests/setup.js'],
+      coverageDirectory: '<rootDir>/coverage/backend',
       collectCoverageFrom: [
-        'server/src/**/*.js',
-        '!server/src/config/**',
+        'backend/src/**/*.js',
+        '!backend/src/config/**',
         '!**/node_modules/**',
       ],
     },
-    
+
+    //Frontend Tests
     {
-      displayName: 'client',
+      displayName: 'frontend',
       testEnvironment: 'jsdom',
-      testMatch: ['<rootDir>/client/src/**/*.test.{js,jsx}'],
+      testMatch: ['<rootDir>/frontend/src/**/*.{test,spec}.{js,jsx}'],
       moduleFileExtensions: ['js', 'jsx', 'json'],
+
       moduleNameMapper: {
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/client/src/tests/__mocks__/fileMock.js',
+        '\\.(jpg|jpeg|png|gif|webp|svg)$':
+          '<rootDir>/frontend/src/tests/__mocks__/fileMock.js',
       },
-      setupFilesAfterEnv: ['<rootDir>/client/src/tests/setup.js'],
+
+      setupFilesAfterEnv: ['<rootDir>/frontend/src/tests/setup.js'],
+
       transform: {
         '^.+\\.(js|jsx)$': 'babel-jest',
       },
-      coverageDirectory: '<rootDir>/coverage/client',
+
+      coverageDirectory: '<rootDir>/coverage/frontend',
       collectCoverageFrom: [
-        'client/src/**/*.{js,jsx}',
-        '!client/src/index.js',
+        'frontend/src/**/*.{js,jsx}',
+        '!frontend/src/index.js',
+        '!frontend/src/main.jsx',
         '!**/node_modules/**',
       ],
     },
   ],
-  
+
   verbose: true,
   collectCoverage: true,
   coverageReporters: ['text', 'lcov', 'clover', 'html'],
+
   coverageThreshold: {
     global: {
       statements: 70,
@@ -49,5 +56,6 @@ module.exports = {
       lines: 70,
     },
   },
+
   testTimeout: 10000,
-}; 
+};

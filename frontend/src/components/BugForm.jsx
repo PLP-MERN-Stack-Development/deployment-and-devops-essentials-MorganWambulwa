@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('Open');
-  const [priority, setPriority] = useState('Medium');
+  const [status, setStatus] = useState('open');
+  const [priority, setPriority] = useState('medium');
 
   useEffect(() => {
     if (editingBug) {
@@ -16,8 +16,8 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
     } else {
       setTitle('');
       setDescription('');
-      setStatus('Open');
-      setPriority('Medium');
+      setStatus('open');
+      setPriority('medium');
     }
   }, [editingBug]);
 
@@ -35,8 +35,8 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
     if (!editingBug) {
       setTitle('');
       setDescription('');
-      setStatus('Open');
-      setPriority('Medium');
+      setStatus('open');
+      setPriority('medium');
     }
   };
 
@@ -49,6 +49,7 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
           <input 
             type="text" 
             className="form-control" 
+            placeholder="Enter title"
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
           />
@@ -57,6 +58,7 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
           <label>Description</label>
           <textarea 
             className="form-control" 
+            placeholder="Enter description"
             value={description} 
             onChange={(e) => setDescription(e.target.value)} 
           />
@@ -68,9 +70,9 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
             value={status} 
             onChange={(e) => setStatus(e.target.value)}
           >
-            <option>Open</option>
-            <option>In Progress</option>
-            <option>Closed</option>
+            <option value="open">Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="closed">Closed</option>
           </select>
         </div>
         <div className="mb-3">
@@ -80,9 +82,9 @@ const BugForm = ({ onSubmit, editingBug, cancelEdit }) => {
             value={priority} 
             onChange={(e) => setPriority(e.target.value)}
           >
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
         </div>
         <button type="submit" className="btn btn-primary me-2">

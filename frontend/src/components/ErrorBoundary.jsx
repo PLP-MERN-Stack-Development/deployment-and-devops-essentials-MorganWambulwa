@@ -14,6 +14,10 @@ class ErrorBoundary extends React.Component {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
   render() {
     if (this.state.hasError) {
       return (
@@ -21,6 +25,20 @@ class ErrorBoundary extends React.Component {
           <h2>Something went wrong.</h2>
           <p>Please try refreshing the page or contact support.</p>
           <pre style={{ color: 'red' }}>{this.state.error?.message}</pre>
+          <button 
+            onClick={this.handleRetry} 
+            style={{
+              marginTop: '1rem',
+              padding: '0.5rem 1rem',
+              backgroundColor: '#4e342e',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Retry
+          </button>
         </div>
       );
     }

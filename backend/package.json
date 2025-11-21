@@ -1,40 +1,22 @@
 {
-  "$schema": "https://json.schemastore.org/package",
-  "name": "server",
+  "name": "backend",
   "version": "1.0.0",
   "type": "module",
-  "description": "MERN Testing and Debugging Server",
-  "main": "src/server.js",
-  "directories": {
-    "test": "tests"
-  },
+  "main": "server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest --runInBand"
+    "test": "jest"
   },
-  "keywords": [
-    "mern",
-    "testing",
-    "debugging",
-    "server"
-  ],
-  "author": "Morgan Wambulwa",
-  "license": "ISC",
   "dependencies": {
-    "compression": "^1.8.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3",
-    "morgan": "^1.10.1"
+    "mongoose": "^7.5.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "mongodb-memory-server": "^9.1.3",
-    "nodemon": "^3.0.2",
-    "supertest": "^6.3.3"
+    "nodemon": "^3.1.11",
+    "@babel/preset-env": "^7.22.20"
   }
 }
