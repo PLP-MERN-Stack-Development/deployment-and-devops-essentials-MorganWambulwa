@@ -1,33 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const compression = require('compression');
-
 const bugRoutes = require('./routes/bugRoutes');
-const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://bugtracker-frontend-lgvnhdvl7-morgan-wambulwas-projects.vercel.app"
- ],
-  credentials: true,
-};
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://bugtracker-frontend-1i6l9kyrg-morgan-wambulwas-projects.vercel.app'
+];
 
-app.use(cors(corsOptions));
-app.use(helmet());
-app.use(compression());
-app.use(morgan('combined'));
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use('/api/bugs', bugRoutes);
 
-app.get('/health', (req, res) => res.send('OK'));
-
-app.use(errorHandler);
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
 
 module.exports = app;
