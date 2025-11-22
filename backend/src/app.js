@@ -6,7 +6,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
+  process.env.CLIENT_URL || 'http://localhost:3000',
   'https://deployment-bugtracker-frontend.vercel.app/'
 ];
 
